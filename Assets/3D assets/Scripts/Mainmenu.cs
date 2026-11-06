@@ -36,7 +36,6 @@ public class MainMenu : MonoBehaviour
         ShowPanel(mainPanel);
     }
 
-    // ---------------- Actions ----------------
 
     void LoadLevel(int index)
     {
@@ -64,7 +63,6 @@ public class MainMenu : MonoBehaviour
         aboutPanel.SetActive(panel == aboutPanel);
     }
 
-    // ---------------- UI building ----------------
 
     void BuildUI()
     {
@@ -77,14 +75,12 @@ public class MainMenu : MonoBehaviour
         scaler.matchWidthOrHeight = 0.5f;
         canvasGO.AddComponent<GraphicRaycaster>();
 
-        // Background
         var bgGO = new GameObject("Background", typeof(RectTransform));
         bgGO.transform.SetParent(canvasGO.transform, false);
         var bg = bgGO.AddComponent<Image>();
         bg.color = new Color(0.08f, 0.09f, 0.14f, 1f);
         Stretch(bgGO.GetComponent<RectTransform>());
 
-        // ----- Main panel -----
         mainPanel = MakePanel(canvasGO.transform, "MainPanel");
         MakeLabel(mainPanel.transform, gameTitle, 80, 140);
         MakeButton(mainPanel.transform, "Start Game", () => LoadLevel(0));
@@ -92,12 +88,11 @@ public class MainMenu : MonoBehaviour
         MakeButton(mainPanel.transform, "About", () => ShowPanel(aboutPanel));
         MakeButton(mainPanel.transform, "Quit", QuitGame);
 
-        // ----- Level select panel -----
         levelPanel = MakePanel(canvasGO.transform, "LevelPanel");
         MakeLabel(levelPanel.transform, "Select Level", 64, 110);
         for (int i = 0; i < levelScenes.Length; i++)
         {
-            int index = i; // capture for the lambda
+            int index = i;
             MakeButton(levelPanel.transform, "Level " + (i + 1), () => LoadLevel(index));
         }
         MakeButton(levelPanel.transform, "Back", () => ShowPanel(mainPanel));
@@ -111,9 +106,8 @@ public class MainMenu : MonoBehaviour
             "CONTROLS\n" +
             "W A S D  -  Move\n" +
             "Space  -  Jump\n" +
-            "X (hold)  -  Rotate character\n" +
-            "Y (hold)  -  Scale up   |   Shift + Y  -  Scale down\n" +
-            "K  -  Toggle speed boost\n" +
+            "Y (hold)  -  Grow bigger\n" +
+            "F or Left Click  -  Attack (backstab enemies from behind)\n" +
             "Esc  -  Return to main menu",
             28, 260, 1300, TextAnchor.UpperCenter);
         MakeButton(aboutPanel.transform, "Back", () => ShowPanel(mainPanel));

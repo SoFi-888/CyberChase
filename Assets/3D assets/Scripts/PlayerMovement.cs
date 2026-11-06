@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -10,29 +11,22 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float gravity = -9.81f;
     public float jumpHeight = 1.5f;
-    public float rotationSpeed = 12f;
 
-    [Header("X - Rotate")]
-    public float spinSpeed = 180f;
+    public string walkingBool = "isWalking";
+    public string jumpTrigger = "Jump";
 
-    [Header("Y - Scale")]
-    public float scaleRate = 1f;
-    public float minScale = 0.5f;
-    public float maxScale = 3f;
+    [HideInInspector] public bool movementLocked;
 
-    [Header("K - Speed Boost")]
-    public float boostMultiplier = 2f;
+    public bool IsBoosted => false;
+    public float SpeedMultiplier => 1f;
 
     private CharacterController controller;
     private Animator animator;
     private Transform cam;
     private Vector3 velocity;
-    private Vector3 startScale;
-    private float scaleFactor = 1f;
-    private bool boosted;
 
-    public bool IsBoosted => boosted;
-    public float SpeedMultiplier => boosted ? boostMultiplier : 1f;
+    private readonly HashSet<string> animParams = new HashSet<string>();
+    private readonly HashSet<string> warnedParams = new HashSet<string>();
 
     public void ResetVelocity()
     {
@@ -44,38 +38,16 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         if (Camera.main != null) cam = Camera.main.transform;
-        startScale = transform.localScale;
+
+        if (animator != null && animator.runtimeAnimatorController != null)
+            foreach (AnimatorControllerParameter p in animator.parameters)
+                animParams.Add(p.name);
     }
 
     void Update()
     {
-        HandleSpecialKeys();
-        HandleMovement();
-    }
-
-    void HandleSpecialKeys()
-    {
-        // X: hold to spin the character around the Y (up) axis
-        if (IsHeld(KeyName.X))
-            transform.Rotate(0f, spinSpeed * Time.deltaTime, 0f);
-
-        // Y: hold to grow, hold Y + Left Shift to shrink (real time)
-        if (IsHeld(KeyName.Y))
-        {
-            float dir = IsHeld(KeyName.Shift) ? -1f : 1f;
-            scaleFactor = Mathf.Clamp(scaleFactor + dir * scaleRate * Time.deltaTime, minScale, maxScale);
-            transform.localScale = startScale * scaleFactor;
-        }
-
-        // K: toggle speed boost on/off
-        if (WasPressed(KeyName.K))
-            boosted = !boosted;
-    }
-
-    void HandleMovement()
-    {
-        Vector2 input = ReadMoveInput();
-        bool jumpPressed = WasPressed(KeyName.Space);
+        Vector2 input = movementLocked ? Vector2.zero : ReadMoveInput();
+        bool jumpPressed = !movementLocked && JumpPressed();
 
         float yaw = cam != null ? cam.eulerAngles.y : 0f;
         Quaternion yawRot = Quaternion.Euler(0f, yaw, 0f);
@@ -84,35 +56,40 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 moveDir = forward * input.y + right * input.x;
         if (moveDir.sqrMagnitude > 1f) moveDir.Normalize();
-
         bool isMoving = moveDir.sqrMagnitude > 0.001f;
 
-        if (animator != null)
-        {
-            animator.SetBool("isWalking", isMoving && controller.isGrounded);
-            animator.speed = boosted ? boostMultiplier : 1f; // walk animation speeds up with boost
-        }
+        // Walk animation
+        if (animator != null && animParams.Contains(walkingBool))
+            animator.SetBool(walkingBool, isMoving && controller.isGrounded);
 
-        if (isMoving)
-        {
-            Quaternion targetRot = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
-        }
-
+        // Gravity and jump
         if (controller.isGrounded && velocity.y < 0f)
             velocity.y = -2f;
 
         if (jumpPressed && controller.isGrounded)
+        {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            PlayTrigger(jumpTrigger);   // jump animation
+        }
 
         velocity.y += gravity * Time.deltaTime;
 
-        float currentSpeed = boosted ? moveSpeed * boostMultiplier : moveSpeed;
-        Vector3 finalMove = moveDir * currentSpeed + Vector3.up * velocity.y;
+        Vector3 finalMove = moveDir * moveSpeed + Vector3.up * velocity.y;
         controller.Move(finalMove * Time.deltaTime);
     }
+    public void PlayTrigger(string triggerName)
+    {
+        if (animator == null || string.IsNullOrEmpty(triggerName)) return;
 
-    enum KeyName { X, Y, K, Space, Shift }
+        if (!animParams.Contains(triggerName))
+        {
+            if (warnedParams.Add(triggerName))
+                Debug.LogWarning("PlayerMovement: Animator has no parameter named '" + triggerName +
+                                 "'. Add a Trigger with that name in the Animator window.");
+            return;
+        }
+        animator.SetTrigger(triggerName);
+    }
 
     Vector2 ReadMoveInput()
     {
@@ -127,57 +104,12 @@ public class PlayerMovement : MonoBehaviour
 #endif
     }
 
-    bool IsHeld(KeyName key)
+    bool JumpPressed()
     {
 #if ENABLE_INPUT_SYSTEM
-        var kb = Keyboard.current;
-        if (kb == null) return false;
-        switch (key)
-        {
-            case KeyName.X: return kb.xKey.isPressed;
-            case KeyName.Y: return kb.yKey.isPressed;
-            case KeyName.K: return kb.kKey.isPressed;
-            case KeyName.Space: return kb.spaceKey.isPressed;
-            case KeyName.Shift: return kb.leftShiftKey.isPressed;
-        }
-        return false;
+        return Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
 #else
-        switch (key)
-        {
-            case KeyName.X: return Input.GetKey(KeyCode.X);
-            case KeyName.Y: return Input.GetKey(KeyCode.Y);
-            case KeyName.K: return Input.GetKey(KeyCode.K);
-            case KeyName.Space: return Input.GetKey(KeyCode.Space);
-            case KeyName.Shift: return Input.GetKey(KeyCode.LeftShift);
-        }
-        return false;
-#endif
-    }
-
-    bool WasPressed(KeyName key)
-    {
-#if ENABLE_INPUT_SYSTEM
-        var kb = Keyboard.current;
-        if (kb == null) return false;
-        switch (key)
-        {
-            case KeyName.X: return kb.xKey.wasPressedThisFrame;
-            case KeyName.Y: return kb.yKey.wasPressedThisFrame;
-            case KeyName.K: return kb.kKey.wasPressedThisFrame;
-            case KeyName.Space: return kb.spaceKey.wasPressedThisFrame;
-            case KeyName.Shift: return kb.leftShiftKey.wasPressedThisFrame;
-        }
-        return false;
-#else
-        switch (key)
-        {
-            case KeyName.X: return Input.GetKeyDown(KeyCode.X);
-            case KeyName.Y: return Input.GetKeyDown(KeyCode.Y);
-            case KeyName.K: return Input.GetKeyDown(KeyCode.K);
-            case KeyName.Space: return Input.GetKeyDown(KeyCode.Space);
-            case KeyName.Shift: return Input.GetKeyDown(KeyCode.LeftShift);
-        }
-        return false;
+        return Input.GetKeyDown(KeyCode.Space);
 #endif
     }
 }

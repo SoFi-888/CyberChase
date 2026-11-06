@@ -44,7 +44,6 @@ public class TransformHUD : MonoBehaviour
 
         if (target == null || hudText == null) return;
 
-        // Horizontal velocity from position change (smoothed)
         if (Time.deltaTime > 0f)
         {
             Vector3 delta = target.position - lastPos;
@@ -57,15 +56,10 @@ public class TransformHUD : MonoBehaviour
         Vector3 s = target.localScale;
         Vector3 r = target.eulerAngles;
 
-        string mode = player.IsBoosted
-            ? "<color=#FFD54A>BOOST x" + player.SpeedMultiplier.ToString("0.##") + "</color>"
-            : "NORMAL x1";
-
         hudText.text =
             "<b>TRANSFORMATION HUD</b>\n" +
             "Scale:      X " + s.x.ToString("0.00") + "   Y " + s.y.ToString("0.00") + "   Z " + s.z.ToString("0.00") + "\n" +
             "Rotation:  X " + r.x.ToString("0.0") + "°   Y " + r.y.ToString("0.0") + "°   Z " + r.z.ToString("0.0") + "°\n" +
-            "Speed mode (K):  " + mode + "\n" +
             "Velocity:  " + speed.ToString("0.00") + " m/s";
     }
 
@@ -80,7 +74,6 @@ public class TransformHUD : MonoBehaviour
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
 
-        // Semi-transparent panel, top-left
         var panel = new GameObject("HUDPanel", typeof(RectTransform));
         panel.transform.SetParent(canvasGO.transform, false);
         var bg = panel.AddComponent<Image>();
@@ -91,7 +84,6 @@ public class TransformHUD : MonoBehaviour
         prt.anchoredPosition = new Vector2(20f, -20f);
         prt.sizeDelta = new Vector2(700f, 250f);
 
-        // Text inside the panel
         var textGO = new GameObject("HUDText", typeof(RectTransform));
         textGO.transform.SetParent(panel.transform, false);
         var trt = textGO.GetComponent<RectTransform>();
