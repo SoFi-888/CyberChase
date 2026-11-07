@@ -289,9 +289,31 @@ MonoBehaviour:
   - Level1
   - Level2
   - Level3
-  gameTitle: Obstacle Course
+  gameTitle: Cyberpunk Chase
+  tagline: // SYSTEM ONLINE
   developerName: Sofia Bibera
-  projectOverview: A 3D Obstacle Course minigame.
+  projectOverview: A 3D Cyberpunk Obstacle Course minigame.
+  controlsText: 'W A S D  -  Move
+
+    Space  -  Jump
+
+    Hold Shift  -  Run
+
+    Hold
+    Right Click  -  Pan the camera
+
+    Mouse Scroll  -  Zoom in / out
+
+    F  - 
+    Backstab an enemy from behind
+
+    Esc  -  Return to the main menu'
+  neonCyan: {r: 0, g: 0.95, b: 1, a: 1}
+  neonMagenta: {r: 1, g: 0.1, b: 0.65, a: 1}
+  neonYellow: {r: 1, g: 0.9, b: 0.1, a: 1}
+  backgroundTop: {r: 0.04, g: 0, b: 0.1, a: 1}
+  backgroundBottom: {r: 0, g: 0.03, b: 0.09, a: 1}
+  animateEffects: 1
 --- !u!4 &825427887
 Transform:
   m_ObjectHideFlags: 0

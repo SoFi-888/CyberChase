@@ -11,11 +11,8 @@ public class PlayerBackstab : MonoBehaviour
     [Header("Attack")]
     [Tooltip("How far above or below the player the enemy can be.")]
     public float verticalReach = 3f;
-    [Tooltip("Total length of the attack. The player can't move or attack again during this time.")]
     public float attackDuration = 0.9f;
-    [Tooltip("Seconds into the animation when the stab actually lands.")]
     public float hitDelay = 0.35f;
-    [Tooltip("Turn toward the nearest enemy when attacking, so you don't have to aim perfectly.")]
     public bool autoFaceEnemy = true;
     public bool debugLogs = false;
 
@@ -56,7 +53,7 @@ public class PlayerBackstab : MonoBehaviour
     {
         attacking = true;
         movement.movementLocked = true;
-        movement.PlayTrigger(backstabTrigger);   // backstab animation
+        movement.PlayTrigger(backstabTrigger);
 
         if (autoFaceEnemy)
         {
@@ -84,8 +81,6 @@ public class PlayerBackstab : MonoBehaviour
             return;
         }
 
-        // Is the player standing in the enemy's back zone (the red wedge)?
-        // EnemyAI decides this with a dot product between its facing direction and the direction to the player.
         float dot = target.DotToward(transform.position);
         bool isBehind = target.IsBehind(transform.position);
 
@@ -118,7 +113,7 @@ public class PlayerBackstab : MonoBehaviour
 
             delta.y = 0f;
             float d = delta.magnitude;
-            if (d <= e.backstabRange && d <= bestDist)   // each enemy decides how far its back zone reaches
+            if (d <= e.backstabRange && d <= bestDist)
             {
                 bestDist = d;
                 best = e;
@@ -133,8 +128,6 @@ public class PlayerBackstab : MonoBehaviour
         dir.y = 0f;
         movement.FaceDirection(dir);
     }
-
-    // ---------------- On-screen message ----------------
 
     void BuildMessageUI()
     {
@@ -151,7 +144,7 @@ public class PlayerBackstab : MonoBehaviour
         textGO.transform.SetParent(canvasGO.transform, false);
 
         RectTransform rt = textGO.GetComponent<RectTransform>();
-        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.78f);   // upper-middle of the screen
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.78f);
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(1400f, 160f);
         rt.anchoredPosition = Vector2.zero;
@@ -164,7 +157,7 @@ public class PlayerBackstab : MonoBehaviour
         messageText.raycastTarget = false;
         messageText.text = "";
 
-        Outline outline = textGO.AddComponent<Outline>();   // dark outline so it is readable on any background
+        Outline outline = textGO.AddComponent<Outline>();
         outline.effectColor = new Color(0f, 0f, 0f, 0.9f);
         outline.effectDistance = new Vector2(3f, -3f);
     }
@@ -184,7 +177,6 @@ public class PlayerBackstab : MonoBehaviour
 
         messageTimer -= Time.deltaTime;
 
-        // Stay fully visible, then fade out over the last 0.4 seconds
         float alpha = Mathf.Clamp01(messageTimer / 0.4f);
         Color c = messageColor;
         c.a = alpha;
@@ -192,8 +184,6 @@ public class PlayerBackstab : MonoBehaviour
 
         if (messageTimer <= 0f) messageText.text = "";
     }
-
-    // ---------------- Input ----------------
 
     bool AttackPressed()
     {

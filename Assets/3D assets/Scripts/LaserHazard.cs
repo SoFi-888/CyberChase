@@ -38,11 +38,6 @@ public class LaserHazard : MonoBehaviour
     [Tooltip("Extra reach around the laser so brushing against it counts as touching.")]
     public float touchPadding = 0.05f;
 
-    [Header("Look")]
-    [Tooltip("Tints the laser with the color below. Leave off to keep your own material.")]
-    public bool applyColor = false;
-    public Color laserColor = new Color(1f, 0.1f, 0.1f);
-
     private SpawnAtCheckpoint player;
     private MeshFilter[] meshFilters;
     private Vector3 startPos;
@@ -54,10 +49,6 @@ public class LaserHazard : MonoBehaviour
         meshFilters = GetComponentsInChildren<MeshFilter>();
         startPos = transform.position;
         startRot = transform.rotation;
-
-        if (applyColor)
-            foreach (Renderer r in GetComponentsInChildren<Renderer>())
-                r.material.color = laserColor;
     }
 
     void Update()
@@ -76,8 +67,6 @@ public class LaserHazard : MonoBehaviour
 
         CheckPlayerTouch();
     }
-
-    // ---------------- Moving ----------------
 
     void Move()
     {
@@ -103,8 +92,6 @@ public class LaserHazard : MonoBehaviour
         return reverseDirection ? -axis : axis;
     }
 
-    // ---------------- Rotating ----------------
-
     void Spin()
     {
         Vector3 axis = WorldRotationAxis();
@@ -122,9 +109,6 @@ public class LaserHazard : MonoBehaviour
         return useWorldAxis ? axis : transform.TransformDirection(axis);
     }
 
-    // ---------------- Touching the player ----------------
-
-    // Uses the real (rotated) shape of the laser, so a long spinning beam only hurts where the beam actually is
     void CheckPlayerTouch()
     {
         if (player == null) return;
@@ -162,8 +146,6 @@ public class LaserHazard : MonoBehaviour
         }
     }
 
-    // ---------------- Scene view preview ----------------
-
     void OnDrawGizmosSelected()
     {
         if (type == LaserType.Static) return;
@@ -176,7 +158,6 @@ public class LaserHazard : MonoBehaviour
 
         if (type == LaserType.Rotate)
         {
-            // Orange circle = the area the spinning laser sweeps, line = the spin axis
             Vector3 axis = WorldRotationAxis();
             Vector3 c = pivot != null ? pivot.position : b.center;
             float reach = Mathf.Max(b.extents.x, Mathf.Max(b.extents.y, b.extents.z));
@@ -191,7 +172,6 @@ public class LaserHazard : MonoBehaviour
             return;
         }
 
-        // Moving: yellow = start, green = far end
         Vector3 basePos = Application.isPlaying ? startPos : transform.position;
         Quaternion baseRot = Application.isPlaying ? startRot : transform.rotation;
         Vector3 lowCenter = b.center - transform.position + basePos;

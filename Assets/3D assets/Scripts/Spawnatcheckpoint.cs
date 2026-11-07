@@ -18,7 +18,6 @@ public class SpawnAtCheckpoint : MonoBehaviour
     private bool hasSpawnPoint;
     private float lastRespawnTime = -10f;
 
-    // Used by hazards to check if they are touching the player
     public Bounds GetBounds()
     {
         return controller.bounds;
@@ -45,7 +44,6 @@ public class SpawnAtCheckpoint : MonoBehaviour
         TeleportTo(spawnPoint);
     }
 
-    // Saves a checkpoint as the new respawn location
     public void SetCheckpoint(Transform cp)
     {
         Vector3 pos = cp.position;

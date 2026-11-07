@@ -12,9 +12,7 @@ public class EnemyAI : MonoBehaviour
     public enum ModelFront { ForwardZ, RightX, BackZ, LeftX }
 
     [Header("Model Direction (fixes the triangle facing the wrong way)")]
-    [Tooltip("Which way is the enemy's FACE pointing? Select the enemy with the Move tool set to 'Local'. ForwardZ = along the blue arrow, RightX = along the red arrow, BackZ = opposite the blue arrow, LeftX = opposite the red arrow. Change this until the blue triangle comes out of the enemy's face.")]
     public ModelFront modelFront = ModelFront.ForwardZ;
-    [Tooltip("Optional fine tuning in degrees, if the face is between two of the options above.")]
     public float fineTuneAngle = 0f;
 
     [Header("Roaming")]
@@ -24,11 +22,9 @@ public class EnemyAI : MonoBehaviour
     public float lookAroundSpeed = 60f;
 
     [Header("Vision (the blue triangle)")]
-    [Tooltip("How far the triangle reaches in front of the enemy.")]
     public float visionDistance = 8f;
     [Range(10f, 180f)]
     public float viewAngle = 90f;
-    [Tooltip("The player must be within this height difference to be seen.")]
     public float visionHeight = 3f;
     public float loseSightTime = 2f;
     public bool requireLineOfSight = true;
@@ -41,12 +37,11 @@ public class EnemyAI : MonoBehaviour
     [Header("Chase")]
     [Tooltip("Keep this lower than the player's Move Speed so the player can escape.")]
     public float chaseSpeed = 4f;
-    public float catchDistance = 1.2f;     // how close counts as touching
-    [Tooltip("Only the FRONT of the enemy hurts. This is the width of its front touch zone in degrees. Touching its sides or back does nothing.")]
+    public float catchDistance = 1.2f;
     [Range(10f, 180f)]
     public float frontTouchAngle = 120f;
     public float catchHeight = 3f;
-    public float stunAfterCatch = 2f;      // ignores the player this long after a catch
+    public float stunAfterCatch = 2f;
 
     [Header("Walls (stops enemies walking through walls)")]
     [Tooltip("Turn off for enemies that are allowed to float through walls, like a ghost.")]
@@ -61,18 +56,17 @@ public class EnemyAI : MonoBehaviour
     public float stepHeight = 0.4f;
 
     [Header("Movement Feel")]
-    public float turnSpeed = 360f;         // degrees per second
+    public float turnSpeed = 360f;
     [Tooltip("Turn on for floating enemies like the ghost. Ground enemies (the robot) stay at their starting height.")]
     public bool flying = false;
-    public float chaseHeight = 1f;         // flying only: height above the player's feet while chasing
+    public float chaseHeight = 1f;
     public float heightSmoothing = 3f;
-    public float bobAmount = 0.15f;        // flying only: gentle floating up and down
+    public float bobAmount = 0.15f;
     public float bobSpeed = 2f;
     public float deathShrinkTime = 0.4f;
 
     public bool IsDead { get; private set; }
 
-    // The direction the enemy is looking (flat, world space)
     public Vector3 FacingDirection
     {
         get
@@ -81,14 +75,11 @@ public class EnemyAI : MonoBehaviour
             return new Vector3(Mathf.Sin(r), 0f, Mathf.Cos(r));
         }
     }
-
-    // Dot product limit for the back zone (used by PlayerBackstab for its debug log)
     public float BackstabDotLimit
     {
         get { return -Mathf.Cos(backstabAngle * 0.5f * Mathf.Deg2Rad); }
     }
 
-    // dot(facing, direction to the point): +1 = in front, 0 = beside, -1 = directly behind
     public float DotToward(Vector3 worldPos)
     {
         Vector3 dir = worldPos - transform.position;
@@ -98,7 +89,6 @@ public class EnemyAI : MonoBehaviour
         return Vector3.Dot(FacingDirection, dir);
     }
 
-    // True if the point is inside the enemy's back zone
     public bool IsBehind(Vector3 worldPos)
     {
         return DotToward(worldPos) <= BackstabDotLimit;
@@ -115,18 +105,17 @@ public class EnemyAI : MonoBehaviour
     private bool waiting;
     private float waitTimer;
     private float lookDirection = 1f;
-    private float heading;                 // which way the enemy faces, in degrees
+    private float heading;
     private float lostSightTimer;
     private float ignorePlayerUntil;
 
-    private float feetOffset;              // height of the enemy's feet relative to its pivot
+    private float feetOffset;
     private bool lastMoveBlocked;
     private float blockedTimer;
     private float chaseBlockedTimer;
     private const float WallSkin = 0.05f;
     private readonly RaycastHit[] hitBuffer = new RaycastHit[16];
 
-    // Angle from the model's local forward (blue arrow) to its face
     float FrontYaw
     {
         get
@@ -162,7 +151,6 @@ public class EnemyAI : MonoBehaviour
         startY = startPos.y;
         heading = transform.eulerAngles.y + FrontYaw;
 
-        // Work out the enemy's size for wall collision from its own collider
         Collider own = GetComponentInChildren<Collider>();
         if (autoSizeFromCollider && own != null)
         {
@@ -221,7 +209,6 @@ public class EnemyAI : MonoBehaviour
             if (state == State.Chase) Chase();
         }
 
-        // Touching the player with the FRONT (while chasing OR roaming) sends them back to their checkpoint
         if (!ignoring && TouchingPlayer(playerPos))
         {
             player.Respawn();
@@ -231,8 +218,6 @@ public class EnemyAI : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, heading - FrontYaw, 0f);
     }
-
-    // ---------------- Vision (dot product + line of sight) ----------------
 
     bool CanSeePlayer(Vector3 playerPos)
     {
@@ -245,16 +230,14 @@ public class EnemyAI : MonoBehaviour
 
         if (dist >= 0.01f)
         {
-            // dot = 1 straight ahead, 0 beside, -1 directly behind
             float dot = Vector3.Dot(FacingDirection, to / dist);
             float minDot = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
-            if (dot < minDot) return false;   // only inside the front triangle
+            if (dot < minDot) return false;
         }
 
         return !requireLineOfSight || HasLineOfSight();
     }
 
-    // False if a wall is between the enemy's eyes and the player
     bool HasLineOfSight()
     {
         Vector3 eye = transform.position + Vector3.up * (feetOffset + bodyHeight * 0.7f);
@@ -274,19 +257,15 @@ public class EnemyAI : MonoBehaviour
     {
         if (Mathf.Abs(transform.position.y - playerPos.y) > catchHeight) return false;
 
-        // Distance from the enemy to the nearest edge of the player's body
         Bounds b = player.GetBounds();
         Vector3 probe = new Vector3(transform.position.x, b.center.y, transform.position.z);
         Vector3 closest = b.ClosestPoint(probe);
         if (HorizontalDistance(transform.position, closest) >= catchDistance) return false;
 
-        // Only the FRONT of the enemy hurts (dot product). Its sides and back are safe.
         Vector3 aim = (closest - transform.position).sqrMagnitude > 0.0001f ? closest : playerPos;
         float minDot = Mathf.Cos(frontTouchAngle * 0.5f * Mathf.Deg2Rad);
         return DotToward(aim) >= minDot;
     }
-
-    // ---------------- Roam ----------------
 
     void Roam()
     {
@@ -294,7 +273,6 @@ public class EnemyAI : MonoBehaviour
 
         if (waiting)
         {
-            // Look around (the blue triangle sweeps with it)
             heading += lookDirection * lookAroundSpeed * Time.deltaTime;
             waitTimer -= Time.deltaTime;
             if (waitTimer <= 0f)
@@ -307,7 +285,6 @@ public class EnemyAI : MonoBehaviour
 
         MoveHorizontal(roamTarget, roamSpeed);
 
-        // Pushed against a wall for a while? Pick somewhere else to go.
         if (lastMoveBlocked)
         {
             blockedTimer += Time.deltaTime;
@@ -330,7 +307,6 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    // Picks a random spot in the roam area that the enemy can actually walk to in a straight line
     void PickNewRoamTarget()
     {
         for (int i = 0; i < 12; i++)
@@ -345,7 +321,6 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        // Nowhere reachable right now: stay put and look around
         roamTarget = transform.position;
     }
 
@@ -360,15 +335,11 @@ public class EnemyAI : MonoBehaviour
         return !FindBlockingHit(from, d / dist, dist + 0.1f, out hit);
     }
 
-    // ---------------- Chase ----------------
-
     void Chase()
     {
-        // Runs to where it last saw the player
         MoveHorizontal(lastSeenPos, chaseSpeed);
         ApplyHeight(lastSeenPos.y + chaseHeight);
 
-        // Stuck against a wall while chasing? Give up for a moment.
         if (lastMoveBlocked)
         {
             chaseBlockedTimer += Time.deltaTime;
@@ -393,8 +364,6 @@ public class EnemyAI : MonoBehaviour
         PickNewRoamTarget();
     }
 
-    // ---------------- Death ----------------
-
     public void Die()
     {
         if (IsDead) return;
@@ -415,8 +384,6 @@ public class EnemyAI : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // ---------------- Movement and walls ----------------
-
     void MoveHorizontal(Vector3 target, float speed)
     {
         Vector3 pos = transform.position;
@@ -430,19 +397,16 @@ public class EnemyAI : MonoBehaviour
             float stepLength = Mathf.Min(speed * Time.deltaTime, d);
             Vector3 newPos = MoveWithWalls(pos, dir.normalized * stepLength);
 
-            // Barely moved even though it tried to? Then it is stuck against a wall.
             float moved = HorizontalDistance(pos, newPos);
             lastMoveBlocked = collideWithWalls && stepLength > 0.0001f && moved < stepLength * 0.5f;
             pos = newPos;
 
-            // Turn to face where it is going
             float desired = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             heading = Mathf.MoveTowardsAngle(heading, desired, turnSpeed * Time.deltaTime);
         }
         transform.position = pos;
     }
 
-    // Moves by 'move' but stops at walls and slides along them instead of going through
     Vector3 MoveWithWalls(Vector3 pos, Vector3 move)
     {
         if (!collideWithWalls) return pos + move;
@@ -459,7 +423,6 @@ public class EnemyAI : MonoBehaviour
                 float travel = Mathf.Max(0f, hit.distance - WallSkin);
                 pos += dir * travel;
 
-                // Slide along the wall with whatever movement is left
                 Vector3 remaining = dir * (dist - travel);
                 move = Vector3.ProjectOnPlane(remaining, hit.normal);
                 move.y = 0f;
@@ -473,7 +436,6 @@ public class EnemyAI : MonoBehaviour
         return pos;
     }
 
-    // Finds the nearest wall in the way of the enemy's body
     bool FindBlockingHit(Vector3 pos, Vector3 dir, float distance, out RaycastHit best)
     {
         best = default(RaycastHit);
@@ -497,8 +459,6 @@ public class EnemyAI : MonoBehaviour
         }
         return found;
     }
-
-    // The enemy's body as a capsule that starts a little above the floor, so the ground itself never blocks it
     void GetBodyCapsule(Vector3 pos, out Vector3 p1, out Vector3 p2)
     {
         float bottom = feetOffset + stepHeight + bodyRadius;
@@ -509,7 +469,6 @@ public class EnemyAI : MonoBehaviour
         p2 = pos + Vector3.up * top;
     }
 
-    // Things that block the enemy: not itself, not the player, not other enemies
     bool IsObstacle(Collider c)
     {
         if (c == null) return false;
@@ -521,7 +480,7 @@ public class EnemyAI : MonoBehaviour
 
     void ApplyHeight(float desiredY)
     {
-        if (!flying) desiredY = startY;   // ground enemies stay at their starting height
+        if (!flying) desiredY = startY;
         else desiredY += Mathf.Sin(Time.time * bobSpeed) * bobAmount;
 
         Vector3 pos = transform.position;
@@ -536,26 +495,20 @@ public class EnemyAI : MonoBehaviour
         return Vector3.Distance(a, b);
     }
 
-    // Select the enemy to see its blue vision triangle, red back zone, orange front touch zone,
-    // green roam area and (gray) the body used for wall collision
     void OnDrawGizmosSelected()
     {
         float h = Application.isPlaying ? heading : transform.eulerAngles.y + FrontYaw;
         Vector3 origin = transform.position + Vector3.up * 0.1f;
 
-        // Front vision (blue)
         DrawWedge(origin, h, viewAngle, visionDistance,
                   new Color(0f, 0.6f, 1f, 0.25f), new Color(0f, 0.8f, 1f, 1f));
 
-        // Back zone (red) - the only place a backstab works
         DrawWedge(origin, h + 180f, backstabAngle, backstabRange,
                   new Color(1f, 0.1f, 0.1f, 0.3f), new Color(1f, 0.2f, 0.2f, 1f));
 
-        // Front touch zone (orange) - the only part of the enemy that hurts
         DrawWedge(origin, h, frontTouchAngle, catchDistance,
                   new Color(1f, 0.6f, 0f, 0.45f), new Color(1f, 0.7f, 0.1f, 1f));
 
-        // Roam area (green)
         Vector3 center = Application.isPlaying ? startPos : transform.position;
         Gizmos.color = Color.green;
 #if UNITY_EDITOR
@@ -565,7 +518,6 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(center, roamRadius);
 #endif
 
-        // Wall-collision body (gray)
         if (collideWithWalls)
         {
             Vector3 p1, p2;

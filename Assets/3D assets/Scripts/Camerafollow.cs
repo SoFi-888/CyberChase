@@ -5,41 +5,25 @@ using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("Target (leave empty to auto-find the player)")]
     public Transform target;
-
-    [Header("Starting View")]
-    [Tooltip("Direction the camera looks at the start, in degrees. 0 = looks along +Z (camera sits on the -Z side of the player). 90 = looks along +X. 180 and 270 = the other two sides.")]
     public float viewYaw = 0f;
-    [Tooltip("How far the camera starts from the player. The scroll wheel changes this while playing.")]
     public float distance = 10f;
-    [Tooltip("Starting downward angle. 0 = perfectly level side view.")]
     public float pitch = 8f;
-    [Tooltip("Nudge the view up (+) or down (-) from the exact center of the player's body.")]
     public float focusOffset = 0f;
 
-    [Header("Right-Click Panning")]
-    [Tooltip("How fast the camera turns while the right mouse button is held.")]
     public float panSensitivity = 0.15f;
-    [Tooltip("Lowest and highest angle the camera can pan to (degrees).")]
     public float minPitch = -5f;
     public float maxPitch = 80f;
-    [Tooltip("Hides and locks the mouse cursor while you pan, so it can't leave the window.")]
     public bool hideCursorWhilePanning = true;
-    [Tooltip("When on, the camera swings back to the starting side view after you let go of the right mouse button.")]
     public bool returnToStartViewOnRelease = false;
     public float returnSpeed = 4f;
 
-    [Header("Scroll Zoom")]
-    [Tooltip("How much each scroll notch zooms.")]
     public float zoomStep = 1.5f;
     public float minZoom = 3f;
     public float maxZoom = 20f;
     public float zoomSmoothTime = 0.1f;
-    [Tooltip("Prints the raw scroll value in the Console, to check that scrolling is detected.")]
     public bool logScroll = false;
 
-    [Header("Zoom In At Walls")]
     [Tooltip("If a wall is between the camera and the player, move the camera closer so the player stays visible.")]
     public bool zoomInAtWalls = true;
     public float collisionRadius = 0.3f;
@@ -48,8 +32,8 @@ public class CameraFollow : MonoBehaviour
     private CharacterController targetController;
     private float currentYaw;
     private float currentPitch;
-    private float targetDistance;     // what the scroll wheel asks for
-    private float currentDistance;    // what we actually use (smoothed, and pulled in by walls)
+    private float targetDistance;
+    private float currentDistance;
     private float zoomVelocity;
     private bool cursorHidden;
 
@@ -82,7 +66,6 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        // ----- Right mouse button held: pan (orbit) around the player -----
         bool panning = RightMouseHeld();
         if (panning)
         {
@@ -98,12 +81,10 @@ public class CameraFollow : MonoBehaviour
         }
         SetCursorHidden(panning && hideCursorWhilePanning);
 
-        // ----- Scroll wheel: zoom in / out -----
         float scroll = ReadScroll();
         if (Mathf.Abs(scroll) > 0.001f)
         {
-            // If a wall is holding the camera closer than the requested zoom, start from where the
-            // camera really is, so scrolling in responds right away.
+
             if (scroll > 0f && currentDistance < targetDistance)
                 targetDistance = currentDistance;
 
@@ -115,7 +96,6 @@ public class CameraFollow : MonoBehaviour
         Vector3 focus = GetFocus();
         Vector3 back = BackDirection();
 
-        // ----- Zoom In At Walls -----
         float desiredDistance = targetDistance;
         if (zoomInAtWalls)
         {
@@ -127,12 +107,10 @@ public class CameraFollow : MonoBehaviour
             }
         }
 
-        // Only the zoom is smoothed. The camera follows the player exactly, so they stay centered.
         currentDistance = Mathf.SmoothDamp(currentDistance, desiredDistance, ref zoomVelocity, zoomSmoothTime);
         transform.position = focus + back * currentDistance;
     }
 
-    // The center of the player's body (not their feet)
     Vector3 GetFocus()
     {
         Vector3 center = targetController != null
@@ -141,7 +119,6 @@ public class CameraFollow : MonoBehaviour
         return center + Vector3.up * focusOffset;
     }
 
-    // Direction from the player toward the camera
     Vector3 BackDirection()
     {
         return Quaternion.Euler(currentPitch, currentYaw, 0f) * Vector3.back;
@@ -154,8 +131,6 @@ public class CameraFollow : MonoBehaviour
         Cursor.lockState = hidden ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !hidden;
     }
-
-    // ---------------- Input (works with the new Input System or the old Input Manager) ----------------
 
     bool RightMouseHeld()
     {
@@ -175,7 +150,6 @@ public class CameraFollow : MonoBehaviour
 #endif
     }
 
-    // +1 per notch scrolled up, -1 per notch scrolled down
     float ReadScroll()
     {
         float raw;
@@ -187,7 +161,6 @@ public class CameraFollow : MonoBehaviour
         if (logScroll && Mathf.Abs(raw) > 0.0001f)
             Debug.Log("CameraFollow: raw scroll value = " + raw);
 
-        // Some systems report about 120 per notch, others report 1. Convert both to 1 per notch.
         float notches = Mathf.Abs(raw) > 5f ? raw / 120f : raw;
         return Mathf.Clamp(notches, -3f, 3f);
     }

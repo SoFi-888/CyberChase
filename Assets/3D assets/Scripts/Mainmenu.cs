@@ -9,10 +9,6 @@ using System.Text;
 using UnityEngine.InputSystem.UI;
 #endif
 
-// Attach this to an empty GameObject in the MainMenu scene.
-// It builds the whole CYBERPUNK menu at runtime (no images or fonts needed):
-// neon colors, scrolling grid, scanlines, a glitching title, glowing HUD-style windows
-// and buttons that light up when you hover over them.
 public class MainMenu : MonoBehaviour
 {
     [Header("Scene Names (must match your scene files and Build Profiles)")]
@@ -46,7 +42,6 @@ public class MainMenu : MonoBehaviour
     [Tooltip("Turn off to stop the moving effects (glitch, scrolling grid, scan bar).")]
     public bool animateEffects = true;
 
-    // ---------- internal ----------
 
     private class NeonButton
     {
@@ -98,15 +93,12 @@ public class MainMenu : MonoBehaviour
         ShowPanel(mainWindow);
     }
 
-    // A techy monospaced font if the computer has one, otherwise Unity's built-in font
     Font LoadFont()
     {
         Font f = Font.CreateDynamicFontFromOSFont(new string[] { "Consolas", "Lucida Console", "Courier New" }, 32);
         if (f == null) f = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         return f;
     }
-
-    // ---------------- Actions ----------------
 
     void LoadLevel(int index)
     {
@@ -133,18 +125,14 @@ public class MainMenu : MonoBehaviour
         levelWindow.SetActive(window == levelWindow);
         aboutWindow.SetActive(window == aboutWindow);
 
-        // The big title is hidden on the About screen to make room for the text
         titleGroup.SetActive(window != aboutWindow);
 
-        // Clear any stuck hover highlights from the screen we just left
         foreach (NeonButton b in neonButtons)
         {
             b.hovered = false;
             b.pressed = false;
         }
     }
-
-    // ---------------- Animation ----------------
 
     void Update()
     {
@@ -175,19 +163,15 @@ public class MainMenu : MonoBehaviour
 
         if (!animateEffects) return;
 
-        // Scrolling grid
         gridRaw.uvRect = new Rect(0f, Mathf.Repeat(t * 0.12f, 1f), 1920f / GridTilePixels, 1080f / GridTilePixels);
 
-        // Slow scan bar sweeping down the screen
         scanBand.anchoredPosition = new Vector2(0f, 700f - Mathf.Repeat(t * 220f, 1400f));
 
         UpdateTitleGlitch(dt, t);
 
-        // Blinking cursor after the tagline
         bool cursorOn = Mathf.Repeat(t, 1f) < 0.55f;
         taglineText.text = taglineBase + (cursorOn ? "_" : " ");
 
-        // Clock
         clockTimer -= dt;
         if (clockTimer <= 0f)
         {
@@ -213,7 +197,6 @@ public class MainMenu : MonoBehaviour
             titleCyan.rectTransform.anchoredPosition = new Vector2(j, Random.Range(-4f, 4f));
             titleMain.rectTransform.anchoredPosition = new Vector2(Random.Range(-6f, 6f), 0f);
 
-            // A thin bar of static flashes across the screen
             glitchBar.gameObject.SetActive(true);
             glitchBar.rectTransform.anchoredPosition = new Vector2(0f, Random.Range(-500f, 500f));
             glitchBar.rectTransform.sizeDelta = new Vector2(0f, Random.Range(4f, 22f));
@@ -226,7 +209,6 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            // Calm state: a slight steady color-split
             float wobble = Mathf.Sin(t * 1.5f) * 1.5f;
             titleMagenta.rectTransform.anchoredPosition = new Vector2(-4f + wobble, 0f);
             titleCyan.rectTransform.anchoredPosition = new Vector2(4f - wobble, 0f);
@@ -234,8 +216,6 @@ public class MainMenu : MonoBehaviour
             glitchBar.gameObject.SetActive(false);
         }
     }
-
-    // ---------------- UI building ----------------
 
     void BuildUI()
     {
@@ -260,19 +240,15 @@ public class MainMenu : MonoBehaviour
 
     void BuildBackground(Transform root)
     {
-        // Dark gradient
         MakeRaw(root, "Background", VerticalGradient(backgroundTop, backgroundBottom, 256), Color.white);
 
-        // Scrolling neon grid
         gridRaw = MakeRaw(root, "Grid", GridTexture(128, 2), new Color(neonMagenta.r, neonMagenta.g, neonMagenta.b, 0.28f));
         gridRaw.uvRect = new Rect(0f, 0f, 1920f / GridTilePixels, 1080f / GridTilePixels);
 
-        // Fades the grid out toward the top, like a horizon
         Color clearTop = new Color(backgroundTop.r, backgroundTop.g, backgroundTop.b, 0f);
         RawImage fade = MakeRaw(root, "HorizonFade", VerticalGradient(backgroundTop, clearTop, 256), Color.white);
         fade.rectTransform.anchorMin = new Vector2(0f, 0.4f);
 
-        // Sweeping scan bar
         scanBand = NewRect("ScanBar", root, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
                            new Vector2(0.5f, 0.5f), new Vector2(2400f, 160f), Vector2.zero);
         Image scan = scanBand.gameObject.AddComponent<Image>();
@@ -286,7 +262,6 @@ public class MainMenu : MonoBehaviour
                                       new Vector2(0.5f, 1f), new Vector2(1700f, 240f), new Vector2(0f, -50f));
         titleGroup = group.gameObject;
 
-        // Three stacked copies make the "color split" glitch look
         string title = gameTitle.ToUpper();
         titleMagenta = MakeText(group, title, 120, neonMagenta, TextAnchor.UpperCenter);
         titleCyan = MakeText(group, title, 120, neonCyan, TextAnchor.UpperCenter);
@@ -296,7 +271,6 @@ public class MainMenu : MonoBehaviour
         glow.effectColor = new Color(neonCyan.r, neonCyan.g, neonCyan.b, 0.35f);
         glow.effectDistance = new Vector2(3f, -3f);
 
-        // Tagline with a blinking cursor
         taglineBase = tagline.ToUpper();
         RectTransform tagRT = NewRect("Tagline", group, new Vector2(0f, 0f), new Vector2(1f, 0f),
                                       new Vector2(0.5f, 0f), new Vector2(0f, 50f), Vector2.zero);
@@ -323,7 +297,7 @@ public class MainMenu : MonoBehaviour
         MakeLabel(content, "SELECT MISSION", 48, 70, 620f, neonMagenta, TextAnchor.MiddleLeft);
         for (int i = 0; i < levelScenes.Length; i++)
         {
-            int index = i;   // capture for the lambda
+            int index = i;
             MakeNeonButton(content, "Level " + (i + 1).ToString("00"), () => LoadLevel(index), neonCyan);
         }
         MakeNeonButton(content, "Back", () => ShowPanel(mainWindow), neonMagenta);
@@ -352,7 +326,6 @@ public class MainMenu : MonoBehaviour
         MakeNeonButton(content, "Back", () => ShowPanel(mainWindow), neonMagenta);
     }
 
-    // "W A S D  -  Move" becomes a yellow "[ W A S D ]" followed by "Move"
     string FormatControls()
     {
         string yl = Hex(neonYellow);
@@ -378,8 +351,6 @@ public class MainMenu : MonoBehaviour
         }
         return sb.ToString();
     }
-
-    // Corner brackets and small status readouts around the edge of the screen
     void BuildScreenFrame(Transform root)
     {
         RectTransform frame = NewRect("ScreenFrame", root, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
@@ -394,8 +365,6 @@ public class MainMenu : MonoBehaviour
         MakeCornerText(frame, "SYS.STATUS // ONLINE", new Vector2(0f, 0f), new Vector2(20f, 14f), neonCyan, TextAnchor.LowerLeft);
         clockText = MakeCornerText(frame, "NEON CITY  00:00:00", new Vector2(1f, 0f), new Vector2(-20f, 14f), neonMagenta, TextAnchor.LowerRight);
     }
-
-    // Scanlines, a dark vignette and a glitch bar drawn over everything
     void BuildOverlays(Transform root)
     {
         RawImage scanlines = MakeRaw(root, "Scanlines", ScanlineTexture(), new Color(1f, 1f, 1f, 1f));
@@ -410,9 +379,6 @@ public class MainMenu : MonoBehaviour
         glitchBar.gameObject.SetActive(false);
     }
 
-    // ---------------- Window and button pieces ----------------
-
-    // A neon-bordered "terminal window" with a header bar. Returns the area to put content in.
     RectTransform MakeWindow(Transform parent, string name, string header, Vector2 size, Vector2 pos,
                              TextAnchor align, out GameObject windowRoot)
     {
@@ -441,7 +407,6 @@ public class MainMenu : MonoBehaviour
         Bar(head, "Dot3", new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(14f, 14f), new Vector2(-72f, 0f), neonCyan);
         Bar(head, "Line", new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 2f), Vector2.zero, neonCyan);
 
-        // Content area under the header
         RectTransform content = NewRect("Content", win, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
                                         Vector2.zero, Vector2.zero);
         content.offsetMax = new Vector2(0f, -52f);
@@ -471,25 +436,22 @@ public class MainMenu : MonoBehaviour
 
         Button btn = go.AddComponent<Button>();
         btn.targetGraphic = nb.fill;
-        btn.transition = Selectable.Transition.None;   // the colors are animated in Update instead
+        btn.transition = Selectable.Transition.None;
         btn.onClick.AddListener(onClick);
 
         LayoutElement le = go.AddComponent<LayoutElement>();
         le.preferredWidth = 620f;
         le.preferredHeight = 76f;
 
-        // Left accent bar and bottom line
         nb.accentBar = Bar(go.transform, "Accent", new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(0f, 0.5f),
                            new Vector2(8f, 0f), Vector2.zero, accent);
         Bar(go.transform, "Underline", new Vector2(0f, 0f), new Vector2(1f, 0f), new Vector2(0.5f, 0f),
             new Vector2(0f, 2f), Vector2.zero, Alpha(accent, 0.5f));
 
-        // Label
         nb.label = MakeText(go.transform, "> " + text.ToUpper(), 34, accent, TextAnchor.MiddleLeft);
         nb.labelRT = nb.label.rectTransform;
         nb.labelRT.offsetMin = new Vector2(40f, 0f);
 
-        // Hover / press / keyboard-selection events
         AddEvent(go, EventTriggerType.PointerEnter, e => nb.hovered = true);
         AddEvent(go, EventTriggerType.PointerExit, e => { nb.hovered = false; nb.pressed = false; });
         AddEvent(go, EventTriggerType.Select, e => nb.hovered = true);
@@ -512,7 +474,6 @@ public class MainMenu : MonoBehaviour
         trigger.triggers.Add(entry);
     }
 
-    // Thin glowing border around a rectangle
     void Frame(RectTransform parent, Color color, float th)
     {
         AddPulse(Bar(parent, "Top", new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, th), Vector2.zero, color), 0f);
@@ -521,7 +482,6 @@ public class MainMenu : MonoBehaviour
         AddPulse(Bar(parent, "Right", new Vector2(1f, 0f), new Vector2(1f, 1f), new Vector2(1f, 0.5f), new Vector2(th, 0f), Vector2.zero, color), 3f);
     }
 
-    // L-shaped brackets in the four corners
     void Corners(RectTransform parent, Color color, float length, float th)
     {
         for (int cx = 0; cx <= 1; cx++)
@@ -543,8 +503,6 @@ public class MainMenu : MonoBehaviour
         p.phase = phase;
         pulseItems.Add(p);
     }
-
-    // ---------------- Small helpers ----------------
 
     RectTransform NewRect(string name, Transform parent, Vector2 aMin, Vector2 aMax, Vector2 pivot,
                           Vector2 size, Vector2 pos)
@@ -632,8 +590,6 @@ public class MainMenu : MonoBehaviour
     {
         return ColorUtility.ToHtmlStringRGB(c);
     }
-
-    // ---------------- Procedural textures (so no image files are needed) ----------------
 
     Texture2D VerticalGradient(Color top, Color bottom, int height)
     {

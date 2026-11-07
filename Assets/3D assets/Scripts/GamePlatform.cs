@@ -49,12 +49,10 @@ public class GamePlatform : MonoBehaviour
 
         Vector3 before = transform.position;
 
-        // Check whether the player is standing on top BEFORE we move
         bool carrying = IsPlayerOnTop();
 
         transform.position = PositionAt(Time.time);
 
-        // Move the player by the same amount so they ride along
         if (carrying && playerController != null && playerController.enabled)
             playerController.Move(transform.position - before);
     }
@@ -63,7 +61,6 @@ public class GamePlatform : MonoBehaviour
     {
         float distance = Mathf.Max(moveDistance, 0.01f);
 
-        // 0 -> 1 -> 0 -> 1 ... at a steady speed
         float t01 = Mathf.PingPong((time + timeOffset) * speed / distance, 1f);
         float eased = smoothEnds ? Mathf.SmoothStep(0f, 1f, t01) : t01;
 
@@ -90,11 +87,9 @@ public class GamePlatform : MonoBehaviour
         Bounds p = player.GetBounds();
         Bounds b = col.bounds;
 
-        // Feet at the top surface of the platform...
         float feet = p.min.y;
         bool atTop = feet >= b.max.y - standingTolerance && feet <= b.max.y + standingTolerance;
 
-        // ...and the player is over the platform, not beside it
         bool overlapsX = p.max.x > b.min.x && p.min.x < b.max.x;
         bool overlapsZ = p.max.z > b.min.z && p.min.z < b.max.z;
 

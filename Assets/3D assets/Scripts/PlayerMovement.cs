@@ -4,36 +4,41 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 #endif
 
-// WASD to move, Space to jump, hold Shift to run (let go of Shift to walk again).
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;       // walking speed
-    public float runSpeed = 8f;        // running speed (while Shift is held)
+    public float moveSpeed = 5f;
+    public float runSpeed = 8f;
     public float gravity = -9.81f;
     public float jumpHeight = 1.5f;
     public float rotationSpeed = 12f;
+    [Tooltip("Seconds after leaving the ground that you can still jump. Makes jumping off moving platforms and ledges feel fair. Set to 0 to turn off.")]
+    public float coyoteTime = 0.1f;
 
     [Header("Facing")]
     [Tooltip("If the character's face doesn't point the way it moves, try 90, -90 or 180.")]
     public float modelYawOffset = 0f;
-    [Tooltip("Stops animations from changing the character's size. Turn off only if you animate the scale on purpose.")]
     public bool lockScale = true;
 
     [Header("Animator Parameters (names must match the Animator window)")]
-    public string walkingBool = "isWalking";   // Bool - true while a move key is held
-    public string runningBool = "isRunning";   // Bool - true while moving in run mode
-    public string jumpingBool = "isJumping";   // Bool - true from jump until landing
-    public string jumpStateName = "Jump";      // Name of the jump STATE (the box in the Animator graph)
+    public string walkingBool = "isWalking";
+    public string runningBool = "isRunning";
+    public string jumpingBool = "isJumping";
+    public string jumpStateName = "Jump";
 
     // Set by PlayerBackstab while the attack animation plays
     [HideInInspector] public bool movementLocked;
 
-    // True while Shift is held
     public bool IsRunning { get; private set; }
 
-    // Kept only so TransformHUD still compiles.
+    public bool IsGrounded { get { return grounded; } }
+
+    public bool RecentlyGrounded
+    {
+        get { return Time.time - lastGroundedTime <= Mathf.Max(coyoteTime, 0.1f); }
+    }
+
     public bool IsBoosted => false;
     public float SpeedMultiplier => 1f;
 
@@ -43,8 +48,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 velocity;
     private Vector3 baseScale;
 
-    private float facingYaw;        // the direction we WANT to face (the script owns this, the Animator can't change it)
+    private float facingYaw;
     private bool jumping;
+    private bool grounded;
+    private float lastGroundedTime = -100f;
     private float jumpStartTime;
 
     private readonly HashSet<string> animParams = new HashSet<string>();
@@ -56,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         jumping = false;
     }
 
-    // Used by PlayerBackstab to turn toward an enemy
     public void FaceDirection(Vector3 dir)
     {
         dir.y = 0f;
@@ -73,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
         baseScale = transform.localScale;
         facingYaw = transform.eulerAngles.y - modelYawOffset;
 
-        // Remember which parameters exist so missing ones don't spam the Console
         if (animator != null && animator.runtimeAnimatorController != null)
             foreach (AnimatorControllerParameter p in animator.parameters)
                 animParams.Add(p.name);
@@ -81,13 +86,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Hold Shift to run. Let go and you are back to walking.
         IsRunning = RunHeld();
 
         Vector2 input = movementLocked ? Vector2.zero : ReadMoveInput();
         bool jumpPressed = !movementLocked && JumpPressed();
 
-        // Camera-relative direction (uses only the camera's yaw)
         float yaw = cam != null ? cam.eulerAngles.y : 0f;
         Quaternion yawRot = Quaternion.Euler(0f, yaw, 0f);
         Vector3 forward = yawRot * Vector3.forward;
@@ -97,7 +100,6 @@ public class PlayerMovement : MonoBehaviour
         if (moveDir.sqrMagnitude > 1f) moveDir.Normalize();
         bool isMoving = moveDir.sqrMagnitude > 0.001f;
 
-        // Turn toward the direction of travel (applied in LateUpdate)
         if (isMoving)
         {
             float desiredYaw = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
@@ -105,16 +107,19 @@ public class PlayerMovement : MonoBehaviour
             facingYaw = Mathf.LerpAngle(facingYaw, desiredYaw, t);
         }
 
-        // Gravity and jump
-        if (controller.isGrounded && velocity.y < 0f)
+        if (grounded) lastGroundedTime = Time.time;
+
+        if (grounded && velocity.y < 0f)
             velocity.y = -2f;
 
-        if (jumpPressed && controller.isGrounded)
+        bool canJump = Time.time - lastGroundedTime <= coyoteTime;
+        if (jumpPressed && canJump)
         {
+            lastGroundedTime = -100f;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumping = true;
             jumpStartTime = Time.time;
-            PlayState(jumpStateName);   // start the jump animation directly
+            PlayState(jumpStateName);
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -122,34 +127,28 @@ public class PlayerMovement : MonoBehaviour
         float currentSpeed = IsRunning ? runSpeed : moveSpeed;
         Vector3 finalMove = moveDir * currentSpeed + Vector3.up * velocity.y;
         controller.Move(finalMove * Time.deltaTime);
+        grounded = controller.isGrounded;
 
-        // The jump is over once we are back on the ground
-        if (jumping && Time.time - jumpStartTime > 0.2f && controller.isGrounded)
+        if (jumping && Time.time - jumpStartTime > 0.2f && grounded)
             jumping = false;
 
-        // Animator: these update instantly, so releasing the keys goes straight to idle
         SetBool(walkingBool, isMoving);
         SetBool(runningBool, isMoving && IsRunning);
         SetBool(jumpingBool, jumping);
     }
 
-    // LateUpdate runs AFTER the Animator, so animations can't overwrite our facing or size
     void LateUpdate()
     {
         transform.rotation = Quaternion.Euler(0f, facingYaw + modelYawOffset, 0f);
         if (lockScale) transform.localScale = baseScale;
     }
 
-    // ---------------- Animator helpers ----------------
-
-    // Plays an Animator trigger (used by PlayerBackstab). Warns once if it doesn't exist.
     public void PlayTrigger(string triggerName)
     {
         if (!HasParam(triggerName)) return;
         animator.SetTrigger(triggerName);
     }
 
-    // Jumps straight into an Animator state by name, without needing a transition
     void PlayState(string stateName)
     {
         if (animator == null || string.IsNullOrEmpty(stateName)) return;
@@ -181,8 +180,6 @@ public class PlayerMovement : MonoBehaviour
                              "'. Add one with that exact name in the Animator window.");
         return false;
     }
-
-    // ---------------- Input (works with the new Input System or the old Input Manager) ----------------
 
     Vector2 ReadMoveInput()
     {

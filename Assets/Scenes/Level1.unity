@@ -166,12 +166,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &84486730
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -299,12 +307,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &95378902
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -628,6 +644,7 @@ MonoBehaviour:
   viewAngle: 68
   visionHeight: 3
   loseSightTime: 2
+  requireLineOfSight: 1
   backstabAngle: 105
   backstabRange: 4.2
   chaseSpeed: 4
@@ -635,6 +652,14 @@ MonoBehaviour:
   frontTouchAngle: 120
   catchHeight: 3
   stunAfterCatch: 2
+  collideWithWalls: 1
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  autoSizeFromCollider: 1
+  bodyRadius: 0.5
+  bodyHeight: 2
+  stepHeight: 0.4
   turnSpeed: 360
   flying: 0
   chaseHeight: 1
@@ -774,12 +799,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &194159441
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,8 +954,8 @@ Transform:
   m_GameObject: {fileID: 203173607}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -32.95, y: -4.71643, z: -4.29}
-  m_LocalScale: {x: 1, y: 6.670495, z: 9.845241}
+  m_LocalPosition: {x: -29.81, y: -4.71643, z: -0.64}
+  m_LocalScale: {x: 1, y: 6.670495, z: 13.58151}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1596010960}
@@ -1017,7 +1050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e63eb256e4980094bbd4aa813b9e4701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlatform
-  type: 1
+  type: 0
   moveDistance: 9
   speed: 4
   reverseDirection: 0
@@ -1071,12 +1104,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &205090361
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1204,12 +1245,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &227155872
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1417,12 +1466,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &271402145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1550,12 +1607,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,12 +1837,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &387950527
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1985,12 +2058,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &397474382
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,12 +2231,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &399779251
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2490,12 +2579,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &569838609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2655,12 +2752,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &587731443
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2868,12 +2973,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &626185827
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,12 +3034,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &626185830
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3054,12 +3175,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &629278596
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3187,12 +3316,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &634901568
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3736,12 +3873,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &788714896
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3869,12 +4014,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &791898845
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4082,12 +4235,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -4184,12 +4345,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &840963352
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4449,12 +4618,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &861935533
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4585,7 +4762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: 8f3a2b44feae3e948920fea4d6c21ac8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.08
+      value: -3.59
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: 8f3a2b44feae3e948920fea4d6c21ac8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4678,6 +4855,7 @@ MonoBehaviour:
   gravity: -9.81
   jumpHeight: 1.5
   rotationSpeed: 12
+  coyoteTime: 0.1
   modelYawOffset: 0
   lockScale: 1
   walkingBool: isWalking
@@ -4773,7 +4951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b46d9b2ee10dda47b5a3ee90076f98a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.48
+      value: -3.99
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2b46d9b2ee10dda47b5a3ee90076f98a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4850,6 +5028,7 @@ MonoBehaviour:
   viewAngle: 68
   visionHeight: 3
   loseSightTime: 2
+  requireLineOfSight: 1
   backstabAngle: 104
   backstabRange: 4.2
   chaseSpeed: 4
@@ -4857,6 +5036,14 @@ MonoBehaviour:
   frontTouchAngle: 120
   catchHeight: 3
   stunAfterCatch: 2
+  collideWithWalls: 1
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  autoSizeFromCollider: 1
+  bodyRadius: 0.5
+  bodyHeight: 2
+  stepHeight: 0.4
   turnSpeed: 360
   flying: 0
   chaseHeight: 1
@@ -4932,12 +5119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &897982248
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5065,12 +5260,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &904479542
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5278,12 +5481,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &909940812
 GameObject:
   m_ObjectHideFlags: 0
@@ -5463,12 +5674,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &914186958
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5900,12 +6119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &973955440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6145,12 +6372,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1033898312
 GameObject:
   m_ObjectHideFlags: 0
@@ -6231,12 +6466,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1047619215
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6364,12 +6607,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1055167151
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6577,12 +6828,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1076634119
 GameObject:
   m_ObjectHideFlags: 0
@@ -6630,12 +6889,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1076634122
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6745,6 +7012,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3bdddb42b981d64690ab10f1d0e3421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TransformHUD
+  player: {fileID: 0}
+  menuSceneName: MainMenu
+  escReturnsToMenu: 1
+  showFloatingLabel: 1
+  movingSpeedThreshold: 0.2
+  teleportDistance: 5
 --- !u!4 &1112179560
 Transform:
   m_ObjectHideFlags: 0
@@ -6807,12 +7080,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1121169866
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6940,12 +7221,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1165566837
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7153,12 +7442,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1213049568
 GameObject:
   m_ObjectHideFlags: 0
@@ -7418,12 +7715,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1279453777
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7631,12 +7936,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1302501890
 GameObject:
   m_ObjectHideFlags: 0
@@ -8100,12 +8413,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1327478140
 GameObject:
   m_ObjectHideFlags: 0
@@ -8153,12 +8474,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1327478143
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8286,12 +8615,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1363412275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8544,12 +8881,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1 &1521631044
 GameObject:
   m_ObjectHideFlags: 0
@@ -8597,12 +8942,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1521631047
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8769,12 +9122,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1598581763
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8867,7 +9228,7 @@ GameObject:
   - component: {fileID: 1617138451}
   - component: {fileID: 1617138450}
   - component: {fileID: 1617138449}
-  - component: {fileID: 1617138448}
+  - component: {fileID: 1617138452}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -8890,25 +9251,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1596010960}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
---- !u!114 &1617138448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1617138446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e63eb256e4980094bbd4aa813b9e4701, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GamePlatform
-  type: 0
-  moveDistance: 5
-  speed: 2
-  reverseDirection: 0
-  smoothEnds: 1
-  timeOffset: 0
-  standingTolerance: 0.35
 --- !u!65 &1617138449
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8987,6 +9329,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617138446}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1617138452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1617138446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63eb256e4980094bbd4aa813b9e4701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamePlatform
+  type: 0
+  moveDistance: 5
+  speed: 2
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  standingTolerance: 0.35
 --- !u!1 &1655987879
 GameObject:
   m_ObjectHideFlags: 0
@@ -9034,12 +9395,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1655987882
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9299,12 +9668,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1757594855
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9432,12 +9809,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1799611532
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9695,12 +10080,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1916049981
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9828,12 +10221,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &1961856994
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -9961,12 +10362,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &2013039798
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10094,12 +10503,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &2027316212
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10227,12 +10644,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!136 &2108004666
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10552,12 +10977,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758bf6e0b2137cf418dff0d480e4a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserHazard
-  mode: 0
-  rotateAxis: {x: 0, y: 1, z: 0}
-  rotateSpeed: 60
+  type: 0
   moveDistance: 3
   moveSpeed: 1.5
-  startOffset: 0
+  reverseDirection: 0
+  smoothEnds: 1
+  timeOffset: 0
+  moveInLocalAxes: 0
+  rotationAxis: {x: 0, y: 1, z: 0}
+  rotationSpeed: 90
+  pivot: {fileID: 0}
+  useWorldAxis: 1
+  touchPadding: 0.05
+  applyColor: 0
+  laserColor: {r: 1, g: 0.1, b: 0.1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
