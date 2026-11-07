@@ -9,17 +9,12 @@ using UnityEngine.InputSystem;
 public class PlayerBackstab : MonoBehaviour
 {
     [Header("Attack")]
-    [Tooltip("How close the enemy must be (horizontally) to be hit.")]
-    public float attackRange = 2.5f;
     [Tooltip("How far above or below the player the enemy can be.")]
     public float verticalReach = 3f;
     [Tooltip("Total length of the attack. The player can't move or attack again during this time.")]
     public float attackDuration = 0.9f;
     [Tooltip("Seconds into the animation when the stab actually lands.")]
     public float hitDelay = 0.35f;
-    [Tooltip("Dot product must be BELOW this to count as behind. -1 = exactly behind only, 0 = anywhere in the back half. -0.5 is about a 120 degree cone behind the enemy.")]
-    [Range(-1f, 1f)]
-    public float behindThreshold = -0.5f;
     [Tooltip("Turn toward the nearest enemy when attacking, so you don't have to aim perfectly.")]
     public bool autoFaceEnemy = true;
     public bool debugLogs = false;
@@ -61,7 +56,7 @@ public class PlayerBackstab : MonoBehaviour
     {
         attacking = true;
         movement.movementLocked = true;
-        movement.PlayTrigger(backstabTrigger);
+        movement.PlayTrigger(backstabTrigger);   // backstab animation
 
         if (autoFaceEnemy)
         {
@@ -89,15 +84,13 @@ public class PlayerBackstab : MonoBehaviour
             return;
         }
 
-        Vector3 enemyToPlayer = transform.position - target.transform.position;
-        enemyToPlayer.y = 0f;
-        enemyToPlayer.Normalize();
-
-        float dot = Vector3.Dot(target.FacingDirection, enemyToPlayer);
-        bool isBehind = dot < behindThreshold;
+        // Is the player standing in the enemy's back zone (the red wedge)?
+        // EnemyAI decides this with a dot product between its facing direction and the direction to the player.
+        float dot = target.DotToward(transform.position);
+        bool isBehind = target.IsBehind(transform.position);
 
         if (debugLogs)
-            Debug.Log("PlayerBackstab: dot = " + dot.ToString("0.00") + " (needs < " + behindThreshold + ") -> " +
+            Debug.Log("PlayerBackstab: dot = " + dot.ToString("0.00") + " (needs <= " + target.BackstabDotLimit.ToString("0.00") + ") -> " +
                       (isBehind ? "BACKSTAB" : "FAILED"));
 
         if (isBehind)
@@ -114,7 +107,7 @@ public class PlayerBackstab : MonoBehaviour
     EnemyAI FindNearestEnemy()
     {
         EnemyAI best = null;
-        float bestDist = attackRange;
+        float bestDist = float.MaxValue;
 
         foreach (EnemyAI e in EnemyAI.All)
         {
@@ -125,7 +118,7 @@ public class PlayerBackstab : MonoBehaviour
 
             delta.y = 0f;
             float d = delta.magnitude;
-            if (d <= bestDist)
+            if (d <= e.backstabRange && d <= bestDist)   // each enemy decides how far its back zone reaches
             {
                 bestDist = d;
                 best = e;
@@ -138,9 +131,10 @@ public class PlayerBackstab : MonoBehaviour
     {
         Vector3 dir = worldPos - transform.position;
         dir.y = 0f;
-        if (dir.sqrMagnitude > 0.0001f)
-            transform.rotation = Quaternion.LookRotation(dir);
+        movement.FaceDirection(dir);
     }
+
+    // ---------------- On-screen message ----------------
 
     void BuildMessageUI()
     {
@@ -157,7 +151,7 @@ public class PlayerBackstab : MonoBehaviour
         textGO.transform.SetParent(canvasGO.transform, false);
 
         RectTransform rt = textGO.GetComponent<RectTransform>();
-        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.78f);
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.78f);   // upper-middle of the screen
         rt.pivot = new Vector2(0.5f, 0.5f);
         rt.sizeDelta = new Vector2(1400f, 160f);
         rt.anchoredPosition = Vector2.zero;
@@ -170,7 +164,7 @@ public class PlayerBackstab : MonoBehaviour
         messageText.raycastTarget = false;
         messageText.text = "";
 
-        Outline outline = textGO.AddComponent<Outline>();
+        Outline outline = textGO.AddComponent<Outline>();   // dark outline so it is readable on any background
         outline.effectColor = new Color(0f, 0f, 0f, 0.9f);
         outline.effectDistance = new Vector2(3f, -3f);
     }
@@ -190,6 +184,7 @@ public class PlayerBackstab : MonoBehaviour
 
         messageTimer -= Time.deltaTime;
 
+        // Stay fully visible, then fade out over the last 0.4 seconds
         float alpha = Mathf.Clamp01(messageTimer / 0.4f);
         Color c = messageColor;
         c.a = alpha;
@@ -197,6 +192,8 @@ public class PlayerBackstab : MonoBehaviour
 
         if (messageTimer <= 0f) messageText.text = "";
     }
+
+    // ---------------- Input ----------------
 
     bool AttackPressed()
     {
@@ -207,9 +204,4 @@ public class PlayerBackstab : MonoBehaviour
 #endif
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-    }
 }
